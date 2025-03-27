@@ -92,13 +92,13 @@
         
         function validation() {
           if (!firstName || !lastName || !dob || !email || !password) {
-            document.getElementById("registrationResult").innerHTML = "Error: All fields of the registration page must be filled out!";
+            document.getElementById("registrationResult").innerHTML = "<strong>Registration Failed</strong><br>Error: All fields of the registration page must be filled out!";
             setTextColor("registrationResult", "red")
             return false;
           }
 
           if (!(password.includes('!') && password.includes('?'))) {
-            document.getElementById("registrationResult").innerHTML = "Error: Password must contain '!' and '?' special character!";
+            document.getElementById("registrationResult").innerHTML = "<strong>Registration Failed</strong><br>Error: Password must contain '!' and '?' special character!";
             setTextColor("registrationResult", "red");
             return false;
           }
@@ -128,7 +128,8 @@
             Date of Birth:<strong> ${user.dob}</strong><br>
             Email:<strong> ${user.email}</strong> <br>
             Password:<strong> ${user.password}</strong></p>
-            <img src="images/sealplush2.png" alt="Seal Plushie" class="rounded" width="85%">
+            <img src="images/sealplush2.png" alt="Seal Plushie" class="rounded" width="85%"><br>
+            <h5 style="font-size:40px;">Thank you for registering!</h5>
             <br><br><br>`;
         }
       }   
