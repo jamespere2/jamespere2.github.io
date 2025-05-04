@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <link href="style.css" rel="stylesheet" type="text/css">
+
+    <title>mhw-wiki</title>
+  </head>
+  <body style="background-color: lightgray;">
+
+
+    <hr class="my-2" width="100%">
+
+
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand" href="mhw-wiki.html">MHW-Wiki</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav w-50">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Monsters
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="large-monsters.html">Large Monsters</a>
+                            <a class="dropdown-item" href="small-monsters.html">Small Monsters</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="weapons.html">Weapons</a>
+                    </li>
+                </ul>
+                
+            </div>
+            
+        </nav>
+    </div>
+    <hr class="my-1" width="100%">
+
+    <div id="heroSection" class="jumbotron jumbotron-fluid p-0 position-relative">
+        <video autoplay loop muted playsinline>
+          <source src="images/MHW_Video.mp4" type="video/mp4">
+        </video>
+      
+        
+        <div class="overlay"></div>
+      
+        
+        <div class="container-fluid text-center text-white position-absolute top-50 start-50 translate-middle">
+          <h1 class="display-4">Monster Hunter World Wiki</h1>
+          <p class="lead">Welcome to the Monster Hunter World Wiki</p>
+        </div>
+    </div>
+    <br/>
+    <script>
+        let monsterArray = [];
+
+        async function apiCall(){
+            const url = 'https://mhw-db.com/monsters';
+            const options = {method: 'GET'};
+
+            try {
+                const response = await fetch(url, options);
+                const result = await response.text();
+                monsterArray = JSON.parse(result);
+            } catch (error) {
+                console.error("API call failed:", error);
+            }
+        }
+
+
+        function showMonsterDetails(monsterId) {
+            const selectedMonster = monsterArray.find(monster => monster.id === Number(monsterId));
+            const monstersContainer = document.getElementById('heroSection');
+
+            const ImageName = `300px-MHWI-${selectedMonster.name.replace(/\s/g, '_')}_Render.png`;
+            const ImageUrl = `images/${ImageName}`; 
+
+            
+            heroSection.innerHTML = `
+              <div class="container text-center py-5">
+                <h2>${selectedMonster.name} (${selectedMonster.species})</h2>
+                <img src="${ImageUrl}" alt="${selectedMonster.name} icon" class="img-fluid" width="35%"> <br>
+                <p><strong>Description:</strong> ${selectedMonster.description}</p>
+                <p><strong>Ailments:</strong> ${selectedMonster.ailments?.map(a => a.name).join(', ') || 'None'}</p>
+                <p><strong>Locations:</strong> ${selectedMonster.locations?.map(loc => loc.name).join(', ') || 'Unknown'}</p>
+                <p><strong>Weaknesses:</strong><br>
+                ${selectedMonster.weaknesses?.map(w => `${w.element}: ${'★'.repeat(w.stars)}`).join('<br>') || 'None'}
+                </p>
+                <p><strong>Obtainable Rewards:<br></strong> ${selectedMonster.rewards?.map(reward => reward.item.name).join('<br>') || 'None'}</p>
+                <button type="button" class="btn btn-secondary" onclick="goBack()">Back to Monster List</button>
+              </div>
+            `;
+
+        }
+
+        function handleSearchKey(event) {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+      
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+      
+            const foundMonster = monsterArray.find(monster =>
+              monster.name.toLowerCase() === query
+            );
+      
+            if (foundMonster) {
+              showMonsterDetails(foundMonster.id);
+            } else {
+              alert("Monster not found");
+            }
+          }
+        }
+
+        function goBack() {
+            window.location.reload(); 
+        }
+
+        apiCall();
+
+    </script>
+
+
+
+    <hr class="my-1" width="100%">
+  </body>
+</html>

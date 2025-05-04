@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <link href="style.css" rel="stylesheet" type="text/css">
+
+    
+        <title>mhw-wiki</title>
+     
+  </head>
+  <body style="background-color: lightgray;">
+
+
+    <hr class="my-2" width="100%">
+
+
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand" href="mhw-wiki.html">MHW-Wiki</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav w-50">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Monsters
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="large-monsters.html">Large Monsters</a>
+                            <a class="dropdown-item" href="small-monsters.html">Small Monsters</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="weapons.html">Weapons</a>
+                    </li>
+                </ul>
+                
+            </div>
+            
+        </nav>
+    </div>
+    <hr class="my-1" width="100%">
+    <br/>
+
+    <div class="container py-4">
+        <h1 class="text-center mb-4">Weapons by Type</h1>
+        <div id="weapons-container"></div>
+        <div id="weaponDetails"></div>
+    </div>
+    
+    <script>
+        let weaponArray = [];
+    
+        async function apiCall() {
+          const url = 'https://mhw-db.com/weapons';
+          const options = { method: 'GET' };
+    
+          const response = await fetch(url, options);
+          const result = await response.text();
+          const allWeapons = JSON.parse(result);
+    
+          weaponArray = allWeapons; // No filter, show all weapon types
+          Display();
+        }
+    
+        function Display() {
+            const container = document.getElementById('weapons-container');
+            container.innerHTML = '';
+
+            const grouped = {};
+            weaponArray.forEach(w => {
+                if (!grouped[w.type]) grouped[w.type] = [];
+                grouped[w.type].push(w);
+            });
+
+            Object.entries(grouped).forEach(([type, weapons]) => {
+                const section = document.createElement('div');
+                section.className = 'mb-3';
+
+                const title = document.createElement('h4');
+                title.textContent = type.replace(/-/g, ' ').toUpperCase();
+                section.appendChild(title);
+
+                const list = document.createElement('ul');
+                list.className = 'ms-3';
+
+                weapons.forEach(weapon => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="javascript:void(0)" onclick="showWeaponDetails(${weapon.id})">${weapon.name}</a>`;
+                    list.appendChild(li);
+                });
+
+                section.appendChild(list);
+                container.appendChild(section);
+            });
+        }
+
+        function showWeaponDetails(weaponId) {
+            const weapon = weaponArray.find(w => w.id === weaponId);
+            const details = document.getElementById('weaponDetails');
+
+            details.innerHTML = `
+                <h3>${weapon.name}</h3>
+                <p><strong>Type:</strong> ${weapon.type}</p>
+                <p><strong>Attack:</strong> ${weapon.attack?.display}</p>
+                <p><strong>Rarity:</strong> ${weapon.rarity}</p>
+                <p><strong>Damage Type:</strong> ${weapon.damageType}</p>
+                ${weapon.assets?.image ? `<img src="${weapon.assets.image}" alt="${weapon.name}" style="max-width:300px;">` : ''}
+                <br><br>
+                <button type="button" class="btn btn-secondary" onclick="goBack()">Back to Weapon List</button>
+            `;
+
+            document.querySelector('h1').textContent = ''; // Hide main heading
+            document.getElementById('weapons-container').style.display = 'none';
+        }
+
+        function goBack() {
+            document.getElementById('weaponDetails').innerHTML = '';
+            document.getElementById('weapons-container').style.display = 'block';
+            document.querySelector('h1').textContent = 'Weapons by Type';
+        }
+      apiCall();
+    </script>
+  </body>
+</html>
