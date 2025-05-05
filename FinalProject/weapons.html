@@ -11,7 +11,7 @@
     <link href="style.css" rel="stylesheet" type="text/css">
 
     
-        <title>mhw-wiki</title>
+        <title>Weapons</title>
      
   </head>
   <body style="background-color: lightgray;">
@@ -22,7 +22,10 @@
 
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg">
-            <a class="navbar-brand" href="mhw-wiki.html">MHW-Wiki</a>
+            <a class="navbar-brand" href="mhw-wiki.html">
+                <img src="images/logo.png" width="30" height="35" class="d-inline-block align-top" alt="">
+                MHW-Wiki
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -51,7 +54,7 @@
 
     <div class="container py-4">
         <h1 class="text-center mb-4">Weapons by Type</h1>
-        <div id="weapons-container"></div>
+        <div id="weapons-container">Calling API please wait...</div>
         <div id="weaponDetails"></div>
     </div>
     
@@ -66,7 +69,7 @@
           const result = await response.text();
           const allWeapons = JSON.parse(result);
     
-          weaponArray = allWeapons; // No filter, show all weapon types
+          weaponArray = allWeapons; 
           Display();
         }
     
@@ -105,19 +108,54 @@
         function showWeaponDetails(weaponId) {
             const weapon = weaponArray.find(w => w.id === weaponId);
             const details = document.getElementById('weaponDetails');
+            
+            let upgradeMaterialsHTML = '';
+
+            if (weapon.crafting?.upgradeMaterials?.length > 0) {
+                upgradeMaterialsHTML = `
+                    <h4>Upgrade Materials:</h4>
+                    <ul>
+                        ${weapon.crafting.upgradeMaterials.map(mat => `
+                            <li>
+                                ${mat.quantity} × <strong>${mat.item.name}</strong><br>
+                                <em>${mat.item.description}</em>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+            }
+
+            
+            let craftingMaterialsHTML = '';
+
+            if (weapon.crafting?.craftable && weapon.crafting?.craftingMaterials?.length > 0) {
+                craftingMaterialsHTML = `
+                    <h4>Crafting Materials:</h4>
+                    <ul>
+                        ${weapon.crafting.craftingMaterials.map(mat => `
+                            <li>
+                                ${mat.quantity} × <strong>${mat.item.name}</strong><br>
+                                <em>${mat.item.description}</em>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+            }
 
             details.innerHTML = `
                 <h3>${weapon.name}</h3>
+                ${weapon.assets?.image ? `<img src="${weapon.assets.image}" alt="${weapon.name}" style="max-width:300px;">` : ''}
+                <br><br>
                 <p><strong>Type:</strong> ${weapon.type}</p>
                 <p><strong>Attack:</strong> ${weapon.attack?.display}</p>
                 <p><strong>Rarity:</strong> ${weapon.rarity}</p>
                 <p><strong>Damage Type:</strong> ${weapon.damageType}</p>
-                ${weapon.assets?.image ? `<img src="${weapon.assets.image}" alt="${weapon.name}" style="max-width:300px;">` : ''}
-                <br><br>
+                ${upgradeMaterialsHTML}
+                ${craftingMaterialsHTML}
                 <button type="button" class="btn btn-secondary" onclick="goBack()">Back to Weapon List</button>
             `;
 
-            document.querySelector('h1').textContent = ''; // Hide main heading
+            document.querySelector('h1').textContent = ''; 
             document.getElementById('weapons-container').style.display = 'none';
         }
 

@@ -20,7 +20,10 @@
 
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg">
-            <a class="navbar-brand" href="mhw-wiki.html">MHW-Wiki</a>
+            <a class="navbar-brand" href="mhw-wiki.html">
+              <img src="images/logo.png" width="30" height="35" class="d-inline-block align-top" alt="">
+              MHW-Wiki
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -46,7 +49,7 @@
     </div>
     <hr class="my-1" width="100%">
 
-    <div id="heroSection" class="jumbotron jumbotron-fluid p-0 position-relative">
+    <div class="jumbotron jumbotron-fluid p-0 position-relative">
         <video autoplay loop muted playsinline>
           <source src="images/MHW_Video.mp4" type="video/mp4">
         </video>
@@ -61,75 +64,7 @@
         </div>
     </div>
     <br/>
-    <script>
-        let monsterArray = [];
-
-        async function apiCall(){
-            const url = 'https://mhw-db.com/monsters';
-            const options = {method: 'GET'};
-
-            try {
-                const response = await fetch(url, options);
-                const result = await response.text();
-                monsterArray = JSON.parse(result);
-            } catch (error) {
-                console.error("API call failed:", error);
-            }
-        }
-
-
-        function showMonsterDetails(monsterId) {
-            const selectedMonster = monsterArray.find(monster => monster.id === Number(monsterId));
-            const monstersContainer = document.getElementById('heroSection');
-
-            const ImageName = `300px-MHWI-${selectedMonster.name.replace(/\s/g, '_')}_Render.png`;
-            const ImageUrl = `images/${ImageName}`; 
-
-            
-            heroSection.innerHTML = `
-              <div class="container text-center py-5">
-                <h2>${selectedMonster.name} (${selectedMonster.species})</h2>
-                <img src="${ImageUrl}" alt="${selectedMonster.name} icon" class="img-fluid" width="35%"> <br>
-                <p><strong>Description:</strong> ${selectedMonster.description}</p>
-                <p><strong>Ailments:</strong> ${selectedMonster.ailments?.map(a => a.name).join(', ') || 'None'}</p>
-                <p><strong>Locations:</strong> ${selectedMonster.locations?.map(loc => loc.name).join(', ') || 'Unknown'}</p>
-                <p><strong>Weaknesses:</strong><br>
-                ${selectedMonster.weaknesses?.map(w => `${w.element}: ${'★'.repeat(w.stars)}`).join('<br>') || 'None'}
-                </p>
-                <p><strong>Obtainable Rewards:<br></strong> ${selectedMonster.rewards?.map(reward => reward.item.name).join('<br>') || 'None'}</p>
-                <button type="button" class="btn btn-secondary" onclick="goBack()">Back to Monster List</button>
-              </div>
-            `;
-
-        }
-
-        function handleSearchKey(event) {
-          if (event.key === 'Enter') {
-            event.preventDefault();
-      
-            const query = document.getElementById('searchInput').value.trim().toLowerCase();
-      
-            const foundMonster = monsterArray.find(monster =>
-              monster.name.toLowerCase() === query
-            );
-      
-            if (foundMonster) {
-              showMonsterDetails(foundMonster.id);
-            } else {
-              alert("Monster not found");
-            }
-          }
-        }
-
-        function goBack() {
-            window.location.reload(); 
-        }
-
-        apiCall();
-
-    </script>
-
-
+    
 
     <hr class="my-1" width="100%">
   </body>

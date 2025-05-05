@@ -10,11 +10,8 @@
 
     <link href="style.css" rel="stylesheet" type="text/css">
 
-    <div class="jumbotron jumbotron-fluid">
-      <div class="container">
-        <title>mhw-wiki</title>
-      </div>
-    </div>
+    <title>small-Monsters</title>
+    
   </head>
   <body style="background-color: lightgray;">
 
@@ -24,7 +21,10 @@
 
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg">
-            <a class="navbar-brand" href="mhw-wiki.html">MHW-Wiki</a>
+            <a class="navbar-brand" href="mhw-wiki.html">
+                <img src="images/logo.png" width="30" height="35" class="d-inline-block align-top" alt="">
+                MHW-Wiki
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -154,9 +154,8 @@
                     <p><strong>Weaknesses:</strong><br>
                 ${selectedMonster.weaknesses?.map(w => `${w.element}: ${'★'.repeat(w.stars)}`).join('<br>') || 'None'}
                 </p>
-                <p><strong>Obtainable Rewards:<br></strong> ${selectedMonster.rewards?.map(reward => reward.item.name).join('<br>') || 'None'}</p>
-                    <button type="button" class="btn btn-secondary" onclick="goBack()">Back to Monster List</button>
-                `;
+                <p><strong>Obtainable Materials:<br></strong> ${selectedMonster.rewards?.map(reward => reward.item.name).join('<br>') || 'None'}</p>
+                    <button type="button" class="btn btn-secondary" onclick="goBack()">Back to Monster List</button>`;
 
                 document.getElementById("monsterheading").innerHTML = " ";
             }
