@@ -54,8 +54,7 @@
 
     <div class="container py-4">
         <h1 class="text-center mb-4">Weapons by Type</h1>
-        <div id="weapons-container">Calling API please wait...</div>
-        <div id="weaponDetails"></div>
+        <div id="weaponsContainer">Calling API please wait...</div>
     </div>
     
     <script>
@@ -74,7 +73,7 @@
         }
     
         function Display() {
-            const container = document.getElementById('weapons-container');
+            const container = document.getElementById('weaponsContainer');
             container.innerHTML = '';
 
             const grouped = {};
@@ -105,9 +104,10 @@
             });
         }
 
+
         function showWeaponDetails(weaponId) {
             const weapon = weaponArray.find(w => w.id === weaponId);
-            const details = document.getElementById('weaponDetails');
+            const details = document.getElementById('weaponsContainer');
             
             let upgradeMaterialsHTML = '';
 
@@ -117,15 +117,14 @@
                     <ul>
                         ${weapon.crafting.upgradeMaterials.map(mat => `
                             <li>
-                                ${mat.quantity} × <strong>${mat.item.name}</strong><br>
+                                ${mat.quantity} x <strong>${mat.item.name}</strong><br>
                                 <em>${mat.item.description}</em>
                             </li>
                         `).join('')}
                     </ul>
                 `;
             }
-
-            
+           
             let craftingMaterialsHTML = '';
 
             if (weapon.crafting?.craftable && weapon.crafting?.craftingMaterials?.length > 0) {
@@ -134,7 +133,7 @@
                     <ul>
                         ${weapon.crafting.craftingMaterials.map(mat => `
                             <li>
-                                ${mat.quantity} × <strong>${mat.item.name}</strong><br>
+                                ${mat.quantity} x <strong>${mat.item.name}</strong><br>
                                 <em>${mat.item.description}</em>
                             </li>
                         `).join('')}
@@ -155,14 +154,11 @@
                 <button type="button" class="btn btn-secondary" onclick="goBack()">Back to Weapon List</button>
             `;
 
-            document.querySelector('h1').textContent = ''; 
-            document.getElementById('weapons-container').style.display = 'none';
+            document.getElementById("weaponheading").innerHTML = " ";
         }
 
         function goBack() {
-            document.getElementById('weaponDetails').innerHTML = '';
-            document.getElementById('weapons-container').style.display = 'block';
-            document.querySelector('h1').textContent = 'Weapons by Type';
+            Display();
         }
       apiCall();
     </script>

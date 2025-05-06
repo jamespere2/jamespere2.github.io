@@ -74,7 +74,7 @@
 
             const isLargeMonstersPage = window.location.pathname.includes('large-monsters');
     
-            // Filter monsters by type
+            
             monsterArray = large_monsters.filter(monster => {
             if (isLargeMonstersPage) {
                 return monster.type === "large";
@@ -82,6 +82,8 @@
                 return monster.type === "small";
             }
             });
+
+            monsterArray.sort((a, b) => a.name.localeCompare(b.name)); //sorts monsters alphabetically A-Z
 
             Display();
         }
