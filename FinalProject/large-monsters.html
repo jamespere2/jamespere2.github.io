@@ -54,12 +54,25 @@
 
     <div class="container">
         <h1 id="monsterheading" class="text-center mb-4">Large Monsters</h1>
+        <div class="mb-3" align="right">
+            <div class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Sort
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                <li><a class="dropdown-item" href="#" onclick="setSortOrder('asc')">A - Z</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setSortOrder('desc')">Z - A</a></li>
+              </ul>
+            </div>
+        </div>
+    
         
         <div id="large-monsters">
 
         </div>
     </div>
 
+    
     <script>
         let monsterArray = [];
 
@@ -165,6 +178,22 @@
 
         
         function goBack() {
+            Display();
+        }
+
+        let sortOrder = 'asc';
+
+        function setSortOrder(order) {
+            sortOrder = order;
+            sortAndDisplay();
+        }
+
+        function sortAndDisplay() {
+            monsterArray.sort((a, b) => 
+                sortOrder === 'asc' 
+                ? a.name.localeCompare(b.name) 
+                : b.name.localeCompare(a.name)
+            );
             Display();
         }
 
