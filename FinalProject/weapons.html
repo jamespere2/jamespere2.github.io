@@ -11,7 +11,7 @@
     <link href="style.css" rel="stylesheet" type="text/css">
 
     
-        <title>Weapons</title>
+    <title>Weapons</title>
      
   </head>
   <body style="background-color: lightgray;">
@@ -54,6 +54,24 @@
 
     <div class="container py-4">
         <h1 id="weaponsheading"class="text-center mb-4">Weapons by Type</h1>
+        <div class="container text-center mb-4" id="weapon-type-nav">
+            <div class="d-flex flex-wrap gap-2 justify-content-center">
+              <a href="#great-sword" class="btn btn-outline-dark btn-sm">Great Swords</a>
+              <a href="#long-sword" class="btn btn-outline-dark btn-sm">Long Swords</a>
+              <a href="#sword-and-shield" class="btn btn-outline-dark btn-sm">Sword and Shield</a>
+              <a href="#dual-blades" class="btn btn-outline-dark btn-sm">Dual Blades</a>
+              <a href="#switch-axe" class="btn btn-outline-dark btn-sm">Switch Axes</a>
+              <a href="#charge-blade" class="btn btn-outline-dark btn-sm">Charge Blades</a>
+              <a href="#hammer" class="btn btn-outline-dark btn-sm">Hammers</a>
+              <a href="#hunting-horn" class="btn btn-outline-dark btn-sm">Hunting Horns</a>
+              <a href="#lance" class="btn btn-outline-dark btn-sm">Lances</a>
+              <a href="#gunlance" class="btn btn-outline-dark btn-sm">Gunlances</a>
+              <a href="#insect-glaive" class="btn btn-outline-dark btn-sm">Insect Glaives</a>
+              <a href="#light-bowgun" class="btn btn-outline-dark btn-sm">Light-bowguns</a>
+              <a href="#heavy-bowgun" class="btn btn-outline-dark btn-sm">Heavy-bowguns</a>
+              <a href="#bow" class="btn btn-outline-dark btn-sm">Bows</a>
+            </div>
+        </div>
         <div id="weaponsContainer">Calling API please wait...</div>
     </div>
     
@@ -85,6 +103,9 @@
             Object.entries(grouped).forEach(([type, weapons]) => {
                 const section = document.createElement('div');
                 section.className = 'mb-3';
+
+                const sectionId = type.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z\-]/g, '');
+                section.id = sectionId;
 
                 const title = document.createElement('h4');
                 title.textContent = type.replace(/-/g, ' ').toUpperCase();
