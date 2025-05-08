@@ -122,6 +122,9 @@
 
                 section.appendChild(list);
                 container.appendChild(section);
+
+                document.getElementById("weaponsheading").innerHTML = "Weapons by Type";
+                document.getElementById("weapon-type-nav").style.display = "block";
             });
         }
 
@@ -177,6 +180,7 @@
             `;
 
             document.getElementById("weaponsheading").innerHTML = " ";
+            document.getElementById("weapon-type-nav").style.display = "none";
         }
 
         function goBack() {
