@@ -1,5 +1,3 @@
 Hello World!
 
-Likely where most of my projects will be kept.
-Repostitory created when I started my web dev class.
-So there will be some remnants of that.
+These are the labs/projects I worked on in my intro Web Dev class.
